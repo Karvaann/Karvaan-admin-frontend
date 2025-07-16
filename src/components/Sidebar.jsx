@@ -61,7 +61,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex" onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
       {/* Sidebar */}
       <div
         ref={sidebarRef}

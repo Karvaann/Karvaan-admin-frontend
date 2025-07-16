@@ -2,9 +2,11 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { useState } from "react";
 import { RiRefreshLine } from "react-icons/ri";
+import BookingFormModal from "../components/BookingFormModal";
 
 const DashBoard = ({ children }) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   // Pagination state
   const [page, setPage] = useState(1);
   const rowsPerPage = 8;
@@ -136,7 +138,7 @@ const DashBoard = ({ children }) => {
           <button className="bg-[#114958] text-white px-6 py-2 rounded-lg shadow hover:bg-[#14505e] transition">
             View Draft
           </button>
-          <button className="bg-[#114958] text-white px-6 py-2 rounded-lg shadow hover:bg-[#14505e] transition">
+          <button onClick={() => setIsCreateOpen(true)} className="bg-[#114958] text-white px-6 py-2 rounded-lg shadow hover:bg-[#14505e] transition">
             Create +
           </button>
         </div>
@@ -393,6 +395,7 @@ const DashBoard = ({ children }) => {
           </div>
         </div>
       </div>
+      <BookingFormModal isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
     </>
   );
 };
