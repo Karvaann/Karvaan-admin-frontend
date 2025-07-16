@@ -75,6 +75,17 @@ export default function Sidebar({ isOpen, setIsOpen }) {
       >
         {/* Toggle Button - icon only, inside sidebar, right aligned */}
         <div className="flex justify-end items-center w-full pt-3 pr-2">
+          {isOpen && <img
+              src="/assets/icons/karvaann wordmark.svg"
+              alt="Karvaann"
+              className="h-[70px]  filter invert"
+            />}
+          <img
+              src="/assets/icons/login-icon 3-6.svg"
+              alt="Logo"
+              className="h-[40px] w-[40px]"
+            />
+          
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="focus:outline-none"
