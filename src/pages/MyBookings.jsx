@@ -2,8 +2,13 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { useState } from "react";
 import { RiRefreshLine } from "react-icons/ri";
+import { FaArrowCircleLeft } from "react-icons/fa";
+import { FaRegArrowAltCircleRight } from "react-icons/fa";
+import { RiExchangeDollarLine } from "react-icons/ri";
+import { CiCirclePlus } from "react-icons/ci";
+import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
-const DashBoard = ({ children }) => {
+const MyBookings = ({ children }) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   // Pagination state
   const [page, setPage] = useState(1);
@@ -132,8 +137,8 @@ const DashBoard = ({ children }) => {
         {children}
 
         {/* Top Action Buttons */}
-        <div className="flex justify-end gap-4 p-6 mb-2 w-full mt-25 mx-[100px]">
-          <button className="bg-[#114958] text-white px-6 py-2 rounded-lg shadow hover:bg-[#14505e] transition">
+        <div className="flex justify-end gap-4 p-6 mb-2 w-full mt-18 mx-[100px]">
+          <button className="bg-white text-[#114958] px-6 py-2 rounded-lg shadow hover:bg-gray-100 transition">
             View Draft
           </button>
           <button className="bg-[#114958] text-white px-6 py-2 rounded-lg shadow hover:bg-[#14505e] transition">
@@ -148,23 +153,38 @@ const DashBoard = ({ children }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="rounded-xl p-4 text-left">
               <label className="block text-gray-700 mb-2">Service Type</label>
-              <select className="w-full border border-gray-300 rounded-lg px-2 py-3 text-gray-500 focus:outline-none">
-                <option>Service Type</option>
-              </select>
+              <div className="relative">
+                <select className="w-full border border-gray-300 rounded-lg px-2 py-3 text-gray-500 focus:outline-none pr-8 appearance-none">
+                  <option>Service Type</option>
+                </select>
+                <span className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  <MdOutlineKeyboardArrowDown size={22} />
+                </span>
+              </div>
             </div>
             <div className="rounded-xl p-4 text-left">
-              <label className="block text-gray-700 mb-2">Service Type</label>
-              <select className="w-full border border-gray-300 rounded-lg px-2 py-3 text-gray-500 focus:outline-none">
-                <option>Status</option>
-              </select>
+              <label className="block text-gray-700 mb-2">Status</label>
+              <div className="relative">
+                <select className="w-full border border-gray-300 rounded-lg px-2 py-3 text-gray-500 focus:outline-none pr-8 appearance-none">
+                  <option>Status</option>
+                </select>
+                <span className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  <MdOutlineKeyboardArrowDown size={22} />
+                </span>
+              </div>
             </div>
             <div className="rounded-xl p-4 text-left">
               <label className="block text-gray-700 mb-2">
                 Owner (Primary)
               </label>
-              <select className="w-full border border-gray-300 rounded-lg px-2 py-3 text-gray-500 focus:outline-none">
-                <option>Select Owner</option>
-              </select>
+              <div className="relative">
+                <select className="w-full border border-gray-300 rounded-lg px-2 py-3 text-gray-500 focus:outline-none pr-8 appearance-none">
+                  <option>Select Owner</option>
+                </select>
+                <span className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  <MdOutlineKeyboardArrowDown size={22} />
+                </span>
+              </div>
             </div>
             <div className="rounded-xl p-4 text-left">
               <label className="block mb-2">Search</label>
@@ -230,7 +250,7 @@ const DashBoard = ({ children }) => {
                 ₹ 12,45,890
               </span>
               <div className="bg-blue-100 rounded-full p-3">
-                {/* Icon goes here */}
+                <RiExchangeDollarLine className="text-[#114958]" size={23} />
               </div>
             </div>
             <span className="text-green-600 mt-2 font-medium">
@@ -247,7 +267,7 @@ const DashBoard = ({ children }) => {
                   ₹ 8,45,620
                 </span>
                 <div className="bg-red-100 rounded-full p-3">
-                  {/* Icon goes here */}
+                  <FaArrowCircleLeft className="text-red-500" size={20} />
                 </div>
               </div>
               <span className="text-red-500 mt-2 font-medium">
@@ -262,7 +282,10 @@ const DashBoard = ({ children }) => {
                   ₹ 4,00,270
                 </span>
                 <div className="bg-green-100 rounded-full p-3">
-                  {/* Icon goes here */}
+                  <FaRegArrowAltCircleRight
+                    className="text-green-500"
+                    size={20}
+                  />
                 </div>
               </div>
               <span className="text-green-600 mt-2 font-medium">
@@ -323,7 +346,9 @@ const DashBoard = ({ children }) => {
                     </td>
                     <td className="px-4 py-3">{row.amount}</td>
                     <td className="px-4 py-3 text-center">
-                      <button className="bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center"></button>
+                      <button className="bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center">
+                        <CiCirclePlus className="text-[#114958]" size={20} />
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -397,4 +422,4 @@ const DashBoard = ({ children }) => {
   );
 };
 
-export default DashBoard;
+export default MyBookings;
