@@ -1,0 +1,31 @@
+{
+  "Flights": {
+    "Billed To": [
+      { "label": "Customer ID", "type": "text", "name": "customerId" },
+      { "label": "First Name", "type": "text", "name": "firstName" },
+      { "label": "Last Name", "type": "text", "name": "lastName" },
+      { "label": "Email ID", "type": "email", "name": "email" },
+      { "label": "Contact Number", "type": "tel", "name": "contactNumber" }
+    ],
+    "ID Upload": [
+      {
+        "label": "ID Type",
+        "type": "select",
+        "name": "idType",
+        "options": ["Aadhar", "Passport", "Voter ID"]
+      },
+      { "label": "ID Number", "type": "text", "name": "idNumber" },
+      { "label": "Upload Document", "type": "file", "name": "uploadDocument" }
+    ]
+  },
+  "Accommodation": {
+    "Hotel Info": [
+      { "label": "Hotel Name", "type": "text", "name": "hotelName" },
+      { "label": "Check-in Date", "type": "date", "name": "checkIn" },
+      { "label": "Check-out Date", "type": "date", "name": "checkOut" }
+    ],
+    "Guest Info": [
+      { "label": "Number of Guests", "type": "number", "name": "guests" }
+    ]
+  }
+}

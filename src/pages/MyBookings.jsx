@@ -8,8 +8,11 @@ import { RiExchangeDollarLine } from "react-icons/ri";
 import { CiCirclePlus } from "react-icons/ci";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
+import BookingFormModal from "../components/BookingFormModal";
+
 const MyBookings = ({ children }) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   // Pagination state
   const [page, setPage] = useState(1);
   const rowsPerPage = 8;
@@ -141,7 +144,10 @@ const MyBookings = ({ children }) => {
           <button className="bg-white text-[#114958] px-6 py-2 rounded-lg shadow hover:bg-gray-100 transition">
             View Draft
           </button>
-          <button className="bg-[#114958] text-white px-6 py-2 rounded-lg shadow hover:bg-[#14505e] transition">
+          <button
+            onClick={() => setIsCreateOpen(true)}
+            className="bg-[#114958] text-white px-6 py-2 rounded-lg shadow hover:bg-[#14505e] transition"
+          >
             Create +
           </button>
         </div>
@@ -418,6 +424,10 @@ const MyBookings = ({ children }) => {
           </div>
         </div>
       </div>
+      <BookingFormModal
+        isOpen={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
+      />
     </>
   );
 };

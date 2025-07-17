@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignIn from "./pages/SignIn";
-import DashBoard from "./pages/DashBoard";
+import DashBoard from "./pages/MyBookings";
 import "./App.css";
 import Leads from "./pages/Leads";
 import Tasks from "./pages/Tasks";
