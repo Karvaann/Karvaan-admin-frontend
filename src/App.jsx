@@ -9,6 +9,7 @@ import { useAuth } from "./context/AuthContext";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
+import BreadCrumb from "./components/BreadCrumb";
 
 function App() {
   const { isAuthenticated } = useAuth();

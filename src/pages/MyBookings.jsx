@@ -1,11 +1,9 @@
-
 import { useState } from "react";
 import { RiRefreshLine } from "react-icons/ri";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import { RiExchangeDollarLine } from "react-icons/ri";
 import { CiCirclePlus } from "react-icons/ci";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
 import BookingFormModal from "../components/BookingFormModal";
 
