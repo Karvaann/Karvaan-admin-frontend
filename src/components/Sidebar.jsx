@@ -10,34 +10,37 @@ const menuItems = [
   {
     label: "Dashboard",
     icon: MdDashboard,
+    href: '/'
   },
   {
     label: "Tasks",
     icon: FaCheckDouble,
+    href: '/tasks'
   },
   {
     label: "Leads",
     icon: FaChartLine,
+    href: '/leads'
   },
   {
     label: "Sales",
     icon: FaTags,
-    subMenu: ["Limitless", "Others"],
+    subMenu: [ { label: "Limitless", href: '/sales/limitless' },  {label: "Others", href: '/sales/other-services'}],
   },
   {
     label: "Operations",
     icon: FaCalendar,
-    subMenu: ["Limitless", "Flights", "Hotels"],
+    subMenu: [ { label: "Limitless", href: '/operations/limitless' },  {label: "Others", href: '/operations/other-services'}],
   },
   {
     label: "Finance",
     icon: FaDollarSign,
-    subMenu: ["Invoices", "Receipts", "Contracts"],
+    subMenu: [ { label: "Limitless", href: '/finance/limitless' },  {label: "Others", href: '/finance/other-services'}],
   },
   {
     label: "Directory",
     icon: FaDatabase,
-    subMenu: ["Vendors", "Customers", "Team"],
+    subMenu: [ { label: "Vendors", href: '/directory/vendors' },  {label: "Customers", href: '/directory/customers'}, {label: "Team", href: '/directory/team'}],
   },
 ];
 
@@ -74,7 +77,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         }}
       >
         {/* Toggle Button - icon only, inside sidebar, right aligned */}
-        <div className="flex justify-end items-center w-full pt-3 pr-2">
+        <div className="flex justify-end items-center w-full pt-3">
           {isOpen && <img
               src="/assets/icons/karvaann wordmark.svg"
               alt="Karvaann"
@@ -83,7 +86,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           <img
               src="/assets/icons/login-icon 3-6.svg"
               alt="Logo"
-              className="h-[40px] w-[40px]"
+              className="h-[35px] w-[35px]"
             />
           
           <button
@@ -120,12 +123,8 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                   setOpenSubMenuIndex(
                     openSubMenuIndex === index ? null : index
                   );
-                } else if (item.label === "Tasks") {
-                  navigate("/tasks");
-                } else if (item.label === "Leads") {
-                  navigate("/leads");
-                } else if (item.label === "Dashboard") {
-                  navigate("/");
+                } else {
+                  navigate(item.href);
                 }
               }}
             >
@@ -162,8 +161,11 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                     <li
                       key={subIndex}
                       className="cursor-pointer text-left text-sm py-1 px-2 rounded text-white"
+                      onClick={() => {
+                        navigate(sub.href);
+                      }}
                     >
-                      {sub}
+                      {sub.label}
                     </li>
                   ))}
                 </ul>

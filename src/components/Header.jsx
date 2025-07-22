@@ -1,26 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaUser, FaCog, FaChartBar, FaSignOutAlt } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IoHomeOutline } from "react-icons/io5";
 import { IoPersonOutline } from "react-icons/io5";
 import { useAuth } from "../context/AuthContext";
+import { useLocation } from "react-router-dom";
 
 const Header = ({ isOpen }) => {
+  const location = useLocation();
   const [isDropDownOpen, setisDropDownOpen] = useState(false);
   const { logout } = useAuth();
   const handleLogOut = () => {
+    // Redirect the user to the SignIn page
     logout();
   };
+
+  const pieceMap = {
+    "other-services": "OS",
+    limitless: "Limitless",
+    sales: "Sales",
+    tasks: "Tasks",
+    leads: "Leads",
+    "": "Dashboard",
+    operations: "Operations",
+    finance: "Finance",
+    directory: "Directory",
+    customers: "Customers",
+    team: "Team",
+    vendors: "Vendors",
+  };
+
+  const generateBreadCrumb = () => {
+    const url = window.location.pathname;
+    const urlPieces = url.split("/").slice(1);
+    return urlPieces.map((piece) => (
+      <>
+        <span className="text-gray-400 mx-2">/</span>
+        <span className="text-[#114958] font-medium mr-2">
+          {pieceMap[piece]}
+        </span>
+      </>
+    ));
+  };
+
+  useEffect(() => {
+    // This runs every time the pathname changes
+    console.log("Path changed to:", location.pathname);
+
+    // Perform any side effect or trigger internal state update
+  }, [location.pathname]);
+
   return (
     <div
       style={{
         marginLeft: isOpen ? "216px" : "64px",
         transition: "margin-left 0.5s ease-in-out",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 50,
       }}
     >
       {/* Header Main Row */}
@@ -96,10 +130,7 @@ const Header = ({ isOpen }) => {
       {/* Breadcrumb Row */}
       <div className="flex items-center px-8 py-3 bg-gray-100 border-b border-gray-200">
         <IoHomeOutline className="w-5 h-5 mr-2 text-[#114958]" />
-        <span className="text-gray-400 mx-2">/</span>
-        <span className="text-[#114958] font-medium mr-2"> Sales</span>
-        <span className="text-gray-400 mx-2">/</span>
-        <span className="text-gray-700 font-medium">OS</span>
+        {generateBreadCrumb()}
       </div>
     </div>
   );
