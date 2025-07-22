@@ -6,16 +6,13 @@ import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import { RiExchangeDollarLine } from "react-icons/ri";
 import { CiCirclePlus } from "react-icons/ci";
-<<<<<<< HEAD
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
 import BookingFormModal from "../components/BookingFormModal";
 
-=======
 import { IoMdArrowDown } from "react-icons/io";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
->>>>>>> ad8d0e8d0ff1fbc912361777d76a72550aa8acb3
 const MyBookings = ({ children }) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
