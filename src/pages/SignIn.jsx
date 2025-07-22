@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const SignIn = () => {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     team: "",
     agentId: "",
@@ -11,26 +12,22 @@ const SignIn = () => {
   const [error, setError] = useState("");
   const [showSuperAdminDialog, setShowSuperAdminDialog] = useState(false);
 
-  const navigate = useNavigate();
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!formData.email || !formData.password) {
-      setError("Email and Password are required!");
-      return;
-    }
+  const handleSubmit = async () => {
+    // if (!formData.email || !formData.password) {
+    //   setError("Email and Password are required!");
+    //   return;
+    // }
 
     try {
       // Sign in logic with twilio
 
-      console.log("User signed in:", user);
       setError("");
-      navigate("/");
+      console.log("Form Data:", formData);
+      login(formData);
     } catch (error) {
       console.error("Sign In Error:", error.message);
       setError(error.message); // Display Firebase error message
@@ -82,7 +79,7 @@ const SignIn = () => {
           className="relative z-10 flex items-center justify-center"
           style={{ marginTop: "-16px" }}
         >
-          <form
+          <div
             onSubmit={handleSubmit}
             className="bg-[#FCFCF8] p-7 rounded-2xl shadow-lg w-[400px] h-[380px] flex flex-col gap-y-[15px]"
           >
@@ -170,7 +167,7 @@ const SignIn = () => {
                   />
                   <button
                     className="w-full py-3 bg-teal-800 hover:bg-teal-900 text-white rounded-lg transition"
-                    onClick={() => setShowSuperAdminDialog(false)}
+                    onClick={() => handleSubmit()}
                   >
                     Login
                   </button>
@@ -180,8 +177,8 @@ const SignIn = () => {
 
             {/* Login Button */}
             <button
-              type="submit"
               className="w-full py-3 bg-teal-800 hover:bg-teal-900 text-white rounded-lg transition"
+              onClick={handleSubmit}
             >
               Login
             </button>
@@ -196,7 +193,7 @@ const SignIn = () => {
                 Forgot?
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

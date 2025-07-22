@@ -3,14 +3,13 @@ import { FaUser, FaCog, FaChartBar, FaSignOutAlt } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IoHomeOutline } from "react-icons/io5";
 import { IoPersonOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Header = ({ isOpen }) => {
-  const navigate = useNavigate();
   const [isDropDownOpen, setisDropDownOpen] = useState(false);
+  const { logout } = useAuth();
   const handleLogOut = () => {
-    // Redirect the user to the SignIn page
-    navigate("/signin");
+    logout();
   };
   return (
     <div
