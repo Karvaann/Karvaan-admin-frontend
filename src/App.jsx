@@ -1,17 +1,28 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import SignIn from "./pages/SignIn";
 import MyBookings from "./pages/MyBookings";
 import "./App.css";
 import Leads from "./pages/Leads";
 import Tasks from "./pages/Tasks";
+import { useAuth } from "./context/AuthContext";
+import Header from "./components/Header";
+import BreadCrumb from "./components/BreadCrumb";
 
 function App() {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <SignIn />;
+  }
+
   return (
     <>
+      <Header />
+      <BreadCrumb />
       <BrowserRouter>
         <Routes>
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/" element={<MyBookings />} />
+          <Route path="*" element={<Navigate to="/MyBookings" replace />} />
+          <Route path="/MyBookings" element={<MyBookings />} />
           <Route path="/leads" element={<Leads />} />
           <Route path="/tasks" element={<Tasks />} />
         </Routes>
