@@ -1,10 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import SignIn from "./pages/SignIn";
-<<<<<<< HEAD
-import DashBoard from "./pages/MyBookings";
-=======
 import MyBookings from "./pages/MyBookings";
->>>>>>> ad8d0e8d0ff1fbc912361777d76a72550aa8acb3
 import "./App.css";
 import Leads from "./pages/Leads";
 import Tasks from "./pages/Tasks";
