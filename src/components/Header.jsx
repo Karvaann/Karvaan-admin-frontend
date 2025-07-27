@@ -30,6 +30,21 @@ const Header = ({ isOpen }) => {
     "vendors": "Vendors"
   }
 
+  const headerMap = {
+    "/sales/limitless": "My Bookings - Limitless",
+    "/sales/other-services": "My Bookings - OS",
+    "/operations/limitless": "My Bookings - Limitless",
+    "/operations/other-services": "My Bookings - OS",
+    "/finance/limitless": "My Bookings - Limitless",
+    "/finance/other-services": "My Bookings - OS",
+    "/leads": "Leads",
+    "/tasks": "Tasks",
+    "/directory/vendors": "Directory - Vendors",
+    "/directory/customers": "Directory - Customers",
+    "/directory/team": "Directory - Team",
+    "/": "Dashboard"
+  }
+
   const generateBreadCrumb = () => {
     const url = window.location.pathname;
     const urlPieces = url.split('/').slice(1);
@@ -38,6 +53,13 @@ const Header = ({ isOpen }) => {
         <span className="text-gray-400 mx-2">/</span>
         <span className="text-[#114958] font-medium mr-2">{pieceMap[piece]}</span>
       </>)
+    );
+  }
+
+  const generateHeaderTitle = () => {
+    const url = window.location.pathname;
+    return (
+      headerMap[url]
     );
   }
 
@@ -60,7 +82,7 @@ const Header = ({ isOpen }) => {
       <div className="flex justify-between items-center px-8 py-4 border-b border-gray-200 bg-white">
         {/* Left: Page Title */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">My Bookings - OS</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{generateHeaderTitle()}</h1>
         </div>
 
         {/* Right: Notification, Profile Avatar, Profile Settings */}

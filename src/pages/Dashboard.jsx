@@ -59,8 +59,8 @@ const Dashboard = () => {
                         <button type="button" onClick={() => setCalenderShow(!calenderShow)} className="flex items-center justify-center h-10 px-5 py-2 rounded-lg border border-[#114958] bg-white text-[#114958] text-center font-poppins text-base font-normal leading-6">{calenderShow ? 'Collapse' : 'Expand'}</button>
                     </div>
                 </div>
-                <div className="flex justify-between items-center w-[100%] px-5 py-4">
-                    <div className="flex gap-4 w-full">
+                <div className="flex w-[100%] px-5 py-4">
+                    <div className="flex justify-between items-center gap-4 w-full">
                         {days.map((offset) => {
                         const currentDate = new Date();
                         currentDate.setDate(today.getDate() + offset);
