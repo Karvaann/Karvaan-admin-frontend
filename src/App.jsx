@@ -9,7 +9,9 @@ import { useAuth } from "./context/AuthContext";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
-import BreadCrumb from "./components/BreadCrumb";
+import Vendors from "./pages/directory/Vendors";
+import Customers from "./pages/directory/Customer";
+import Teams from "./pages/directory/Teams";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -21,16 +23,22 @@ function App() {
 
   return (
     <>
-      <Header />
-      <BreadCrumb />
       <BrowserRouter>
         <Header isOpen={isSideBarOpen} />
         <Sidebar isOpen={isSideBarOpen} setIsOpen={setIsSideBarOpen} />
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/sales/limitless" element={<MyBookings />} />
           <Route path="/sales/other-services" element={<MyBookings />} />
+          <Route path="/operations/limitless" element={<MyBookings />} />
+          <Route path="/operations/other-services" element={<MyBookings />} />
+          <Route path="/finance/limitless" element={<MyBookings />} />
+          <Route path="/finance/other-services" element={<MyBookings />} />
           <Route path="/leads" element={<Leads />} />
           <Route path="/tasks" element={<Tasks />} />
+          <Route path="/directory/vendors" element={<Vendors />} />
+          <Route path="/directory/customers" element={<Customers />} />
+          <Route path="/directory/team" element={<Teams />} />
         </Routes>
       </BrowserRouter>
     </>
