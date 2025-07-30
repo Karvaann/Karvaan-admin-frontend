@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaUser, FaCog, FaChartBar, FaSignOutAlt } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IoHomeOutline } from "react-icons/io5";
@@ -9,25 +9,79 @@ const Header = ({ isOpen }) => {
   const [isDropDownOpen, setisDropDownOpen] = useState(false);
   const { logout } = useAuth();
   const handleLogOut = () => {
+    // Redirect the user to the SignIn page
     logout();
   };
+
+  const pieceMap = {
+    "other-services": "OS",
+    limitless: "Limitless",
+    sales: "Sales",
+    tasks: "Tasks",
+    leads: "Leads",
+    "": "Dashboard",
+    operations: "Operations",
+    finance: "Finance",
+    directory: "Directory",
+    customers: "Customers",
+    team: "Team",
+    vendors: "Vendors",
+  };
+
+  const headerMap = {
+    "/sales/limitless": "My Bookings - Limitless",
+    "/sales/other-services": "My Bookings - OS",
+    "/operations/limitless": "My Bookings - Limitless",
+    "/operations/other-services": "My Bookings - OS",
+    "/finance/limitless": "My Bookings - Limitless",
+    "/finance/other-services": "My Bookings - OS",
+    "/leads": "Leads",
+    "/tasks": "Tasks",
+    "/directory/vendors": "Directory - Vendors",
+    "/directory/customers": "Directory - Customers",
+    "/directory/team": "Directory - Team",
+    "/": "Dashboard",
+  };
+
+  const generateBreadCrumb = () => {
+    const url = window.location.pathname;
+    const urlPieces = url.split("/").slice(1);
+    return urlPieces.map((piece) => (
+      <>
+        <span className="text-gray-400 mx-2">/</span>
+        <span className="text-[#114958] font-medium mr-2">
+          {pieceMap[piece]}
+        </span>
+      </>
+    ));
+  };
+
+  const generateHeaderTitle = () => {
+    const url = window.location.pathname;
+    return headerMap[url];
+  };
+
+  useEffect(() => {
+    // This runs every time the pathname changes
+    console.log("Path changed to:", location.pathname);
+
+    // Perform any side effect or trigger internal state update
+  }, [location.pathname]);
+
   return (
     <div
       style={{
         marginLeft: isOpen ? "216px" : "64px",
         transition: "margin-left 0.5s ease-in-out",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 50,
       }}
     >
       {/* Header Main Row */}
       <div className="flex justify-between items-center px-8 py-4 border-b border-gray-200 bg-white">
         {/* Left: Page Title */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">My Bookings - OS</h1>
+          <h1 className="text-2xl font-bold text-gray-900">
+            {generateHeaderTitle()}
+          </h1>
         </div>
 
         {/* Right: Notification, Profile Avatar, Profile Settings */}
@@ -96,10 +150,7 @@ const Header = ({ isOpen }) => {
       {/* Breadcrumb Row */}
       <div className="flex items-center px-8 py-3 bg-gray-100 border-b border-gray-200">
         <IoHomeOutline className="w-5 h-5 mr-2 text-[#114958]" />
-        <span className="text-gray-400 mx-2">/</span>
-        <span className="text-[#114958] font-medium mr-2"> Sales</span>
-        <span className="text-gray-400 mx-2">/</span>
-        <span className="text-gray-700 font-medium">OS</span>
+        {generateBreadCrumb()}
       </div>
     </div>
   );

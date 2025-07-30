@@ -1,32 +1,46 @@
-import React, { createContext } from "react";
+// src/context/AuthContext.js
+import React, { createContext, useContext, useState, useEffect } from "react";
 
+// Create context
 const AuthContext = createContext();
 
+// Exported hook to use the context
+export const useAuth = () => useContext(AuthContext);
+
+// Provider component
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = React.useState(null);
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [user, setUser] = useState(null); // or initial value from localStorage/session
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Optional: Load user from localStorage/session on mount
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    setLoading(false);
+  }, []);
 
   const login = (userData) => {
     setUser(userData);
-    setIsAuthenticated(true);
+    localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
-    setIsAuthenticated(false);
+    localStorage.removeItem("user");
+  };
+
+  const value = {
+    user,
+    login,
+    logout,
+    isAuthenticated: !!user,
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
-      {children}
+    <AuthContext.Provider value={value}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
-
-export function useAuth() {
-  const context = React.useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-}

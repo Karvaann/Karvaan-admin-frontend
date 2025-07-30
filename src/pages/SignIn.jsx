@@ -9,28 +9,19 @@ const SignIn = () => {
     otp: "",
     isSuperAdmin: false,
   });
-  const [error, setError] = useState("");
-  const [showSuperAdminDialog, setShowSuperAdminDialog] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async () => {
-    // if (!formData.email || !formData.password) {
-    //   setError("Email and Password are required!");
-    //   return;
-    // }
-
     try {
       // Sign in logic with twilio
 
-      setError("");
-      console.log("Form Data:", formData);
+      console.log("User signed in:", formData);
       login(formData);
     } catch (error) {
       console.error("Sign In Error:", error.message);
-      setError(error.message); // Display Firebase error message
     }
   };
   return (
@@ -79,10 +70,7 @@ const SignIn = () => {
           className="relative z-10 flex items-center justify-center"
           style={{ marginTop: "-16px" }}
         >
-          <div
-            onSubmit={handleSubmit}
-            className="bg-[#FCFCF8] p-7 rounded-2xl shadow-lg w-[400px] h-[380px] flex flex-col gap-y-[15px]"
-          >
+          <div className="bg-[#FCFCF8] p-7 rounded-2xl shadow-lg w-[400px] h-[380px] flex flex-col gap-y-[15px]">
             {/* Team Select */}
             <select
               name="team"
@@ -130,9 +118,9 @@ const SignIn = () => {
                 name="isSuperAdmin"
                 checked={formData.isSuperAdmin}
                 onChange={(e) => {
-                  if (e.target.checked) {
-                    setShowSuperAdminDialog(true);
-                  }
+                  // if (e.target.checked) {
+                  //   setShowSuperAdminDialog(true);
+                  // }
                   setFormData({ ...formData, isSuperAdmin: e.target.checked });
                 }}
                 className="mr-3 w-5 h-5 accent-teal-800 rounded-full"
@@ -142,43 +130,10 @@ const SignIn = () => {
               </label>
             </div>
 
-            {/* Super Admin Dialog */}
-            {showSuperAdminDialog && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                <div className="bg-[#FCFCF8] rounded-2xl shadow-xl p-8 w-[400px] relative">
-                  <button
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-xl"
-                    onClick={() => setShowSuperAdminDialog(false)}
-                  >
-                    &times;
-                  </button>
-                  <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-                    Super Admin Login
-                  </h2>
-                  <input
-                    type="text"
-                    placeholder="Phone Number/Email"
-                    className="w-full mb-4 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Enter OTP"
-                    className="w-full mb-6 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"
-                  />
-                  <button
-                    className="w-full py-3 bg-teal-800 hover:bg-teal-900 text-white rounded-lg transition"
-                    onClick={() => handleSubmit()}
-                  >
-                    Login
-                  </button>
-                </div>
-              </div>
-            )}
-
             {/* Login Button */}
             <button
+              onClick={() => handleSubmit()}
               className="w-full py-3 bg-teal-800 hover:bg-teal-900 text-white rounded-lg transition"
-              onClick={handleSubmit}
             >
               Login
             </button>

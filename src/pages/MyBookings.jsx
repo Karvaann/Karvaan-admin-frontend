@@ -1,16 +1,17 @@
-import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
 import { useState } from "react";
 import { RiRefreshLine } from "react-icons/ri";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import { RiExchangeDollarLine } from "react-icons/ri";
 import { CiCirclePlus } from "react-icons/ci";
+
+import BookingFormModal from "../components/BookingFormModal";
+
 import { IoMdArrowDown } from "react-icons/io";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
 const MyBookings = ({ children }) => {
-  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   // Pagination state
   const [page, setPage] = useState(1);
   const rowsPerPage = 8;
@@ -124,25 +125,22 @@ const MyBookings = ({ children }) => {
     page * rowsPerPage
   );
 
-  const tabs = ["Users", "Projects", "Operating Status"];
   return (
     <>
-      <Header isOpen={isSideBarOpen} />
-
-      <Sidebar isOpen={isSideBarOpen} setIsOpen={setIsSideBarOpen} />
       <div
-        className={`transition-all duration-500 ease-in-out flex-1 ${
-          isSideBarOpen ? "ml-[150px] scale-[0.96]" : "ml-[44px] scale-100"
-        }`}
+        className={`transition-all duration-500 ease-in-out flex-1 ml-[44px] scale-100 w-[90vw] pl-30`}
       >
         {children}
 
         {/* Top Action Buttons */}
-        <div className="flex justify-end gap-4 p-6 mb-2 w-full mt-18 mx-[100px]">
+        <div className="flex justify-end gap-4 p-6 mb-2 w-full mt-5 mx-[100px]">
           <button className="bg-white text-[#114958] px-6 py-2 rounded-lg shadow hover:bg-gray-100 transition">
             View Draft
           </button>
-          <button className="bg-[#114958] text-white px-6 py-2 rounded-lg shadow hover:bg-[#14505e] transition">
+          <button
+            onClick={() => setIsCreateOpen(true)}
+            className="bg-[#114958] text-white px-6 py-2 rounded-lg shadow hover:bg-[#14505e] transition"
+          >
             Create +
           </button>
         </div>
@@ -419,6 +417,10 @@ const MyBookings = ({ children }) => {
           </div>
         </div>
       </div>
+      <BookingFormModal
+        isOpen={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
+      />
     </>
   );
 };
