@@ -2,28 +2,67 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 const SignIn = () => {
-  const { login } = useAuth();
-  const [formData, setFormData] = useState({
-    team: "",
-    agentId: "",
-    otp: "",
-    isSuperAdmin: false,
-  });
+  const [team, setTeam] = useState("");
+  const [otp, setOtp] = useState("");
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const [agentId, setAgentId] = useState("");
+  const [number, setNumber] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+
+  const { loginAgent, loginSU, verifyOtp } = useAuth();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    switch (e.target.name) {
+      case "team":
+        setTeam(e.target.value);
+        break;
+      case "agentId":
+        setAgentId(e.target.value);
+        break;
+      case "otp":
+        setOtp(e.target.value);
+        break;
+      case "number":
+        setNumber(e.target.value);
+        break;
+      case "isSuperAdmin":
+        setIsSuperAdmin(e.target.checked);
+        break;
+      default:
+        break;
+    }
   };
 
   const handleSubmit = async () => {
-    try {
-      // Sign in logic with twilio
-
-      console.log("User signed in:", formData);
-      login(formData);
-    } catch (error) {
-      console.error("Sign In Error:", error.message);
+    if (otpSent) {
+      verifyOtp({
+        signingId: isSuperAdmin ? number : agentId,
+        otp,
+        superAdmin: isSuperAdmin,
+      });
+    } else {
+      try {
+        // Sign in logic with twilio
+        if (isSuperAdmin) {
+          const formData = {
+            phoneNumber: number,
+          };
+          console.log("SU otp sent", formData);
+          loginSU(formData, setOtpSent);
+        } else {
+          const formData = {
+            agentId: agentId,
+          };
+          console.log("Agent OTP sent", formData);
+          loginAgent(formData, setOtpSent);
+        }
+      } catch (error) {
+        console.error("Sign In Error:", error.message);
+        alert("Error signing in. Please try again.");
+      }
     }
   };
+
   return (
     <div className="fixed inset-0 w-full h-full overflow-hidden">
       {/* Background Video */}
@@ -70,15 +109,15 @@ const SignIn = () => {
           className="relative z-10 flex items-center justify-center"
           style={{ marginTop: "-16px" }}
         >
-          <div className="bg-[#FCFCF8] p-7 rounded-2xl shadow-lg w-[400px] h-[380px] flex flex-col gap-y-[15px]">
+          <div className="bg-[#FCFCF8] p-7 rounded-2xl shadow-lg w-[400px] flex flex-col gap-y-[15px]">
             {/* Team Select */}
             <select
               name="team"
-              value={formData.team}
+              value={team}
               onChange={handleChange}
               required
               className={`w-full px-4 py-3 border border-gray-300 rounded-lg transition-colors duration-200 hover:border-black-500 ${
-                !formData.team ? "text-gray-400" : "text-black-500"
+                !team ? "text-gray-400" : "text-black-500"
               }`}
             >
               <option value="" disabled hidden>
@@ -90,44 +129,55 @@ const SignIn = () => {
             </select>
 
             {/* Agent ID */}
-            <input
-              type="text"
-              name="agentId"
-              value={formData.agentId}
-              onChange={handleChange}
-              placeholder="Enter Agent ID"
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg transition-colors duration-200 hover:border-black-500"
-            />
+            {!isSuperAdmin && (
+              <input
+                type="text"
+                name="agentId"
+                value={agentId}
+                onChange={handleChange}
+                disabled={otpSent}
+                placeholder="Enter Agent ID"
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg transition-colors duration-200 hover:border-black-500"
+              />
+            )}
+
+            {isSuperAdmin && (
+              <input
+                type="text"
+                name="number"
+                value={number}
+                disabled={otpSent}
+                onChange={handleChange}
+                placeholder="Enter Number"
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg transition-colors duration-200 hover:border-black-500"
+              />
+            )}
 
             {/* OTP */}
-            <input
-              type="text"
-              name="otp"
-              value={formData.otp}
-              onChange={handleChange}
-              placeholder="Enter OTP"
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg transition-colors duration-200 hover:border-black-500"
-            />
+            {otpSent && (
+              <input
+                type="text"
+                name="otp"
+                value={otp}
+                onChange={handleChange}
+                placeholder="Enter OTP"
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg transition-colors duration-200 hover:border-black-500"
+              />
+            )}
 
             {/* Checkbox */}
-            <div className="flex items-center py-2">
-              <input
-                type="checkbox"
-                name="isSuperAdmin"
-                checked={formData.isSuperAdmin}
-                onChange={(e) => {
-                  // if (e.target.checked) {
-                  //   setShowSuperAdminDialog(true);
-                  // }
-                  setFormData({ ...formData, isSuperAdmin: e.target.checked });
-                }}
-                className="mr-3 w-5 h-5 accent-teal-800 rounded-full"
-              />
-              <label className="text-balance text-gray-700">
-                I am a Super Admin
-              </label>
+            <div
+              className="flex items-center justify-center py-2 cursor-pointer text-teal-800 hover:text-black transition 0.25s ease-in-out"
+              onClick={() => setIsSuperAdmin(!isSuperAdmin)}
+            >
+              {!isSuperAdmin ? (
+                <span>I am a Super Admin</span>
+              ) : (
+                <span>I am an agent</span>
+              )}
             </div>
 
             {/* Login Button */}
@@ -135,19 +185,8 @@ const SignIn = () => {
               onClick={() => handleSubmit()}
               className="w-full py-3 bg-teal-800 hover:bg-teal-900 text-white rounded-lg transition"
             >
-              Login
+              {otpSent ? "Verify OTP" : "Send OTP"}
             </button>
-
-            {/* Forgot Link */}
-            <div className="text-right text-sm">
-              <button
-                type="button"
-                className="text-black-600 hover:underline"
-                onClick={() => alert("Forgot logic not yet implemented")}
-              >
-                Forgot?
-              </button>
-            </div>
           </div>
         </div>
       </div>
