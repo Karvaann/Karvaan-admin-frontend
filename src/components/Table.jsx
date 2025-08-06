@@ -1,6 +1,7 @@
 import React from 'react';
 
 const Table = ({ data, columns }) => {
+    console.log("Table Data Inside Table:", data);
     const [page, setPage] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const totalRows = data.length;
@@ -9,6 +10,8 @@ const Table = ({ data, columns }) => {
         (page - 1) * rowsPerPage,
         page * rowsPerPage
     );
+
+    console.log("Paginated Rows:", paginatedRows);
 
     return (
         <>
@@ -37,7 +40,7 @@ const Table = ({ data, columns }) => {
                     } hover:bg-gray-100`}
                     >
                     {
-                        row.map(d => d)
+                        row
                     }
                     </tr>
                 ))}
