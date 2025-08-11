@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { RiRefreshLine } from "react-icons/ri";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
@@ -15,109 +16,93 @@ const MyBookings = ({ children }) => {
   // Pagination state
   const [page, setPage] = useState(1);
   const rowsPerPage = 8;
-  // Table data
-  const bookings = [
-    {
-      voucher: "OS-78945",
-      bookingId: "Rajesh Sharma",
-      leadPax: "09 Mar 2025",
-      date: "✈️ Flight",
-      service: "In Progress",
-      statusColor: "bg-orange-100 text-orange-600",
-      amount: "₹ 24,580",
-      addTask: "",
-    },
-    {
-      voucher: "OS-78932",
-      bookingId: "Priya Malhotra",
-      leadPax: "18 Jul 2025",
-      date: "🏨 Accomodation",
-      service: "Pending",
-      statusColor: "bg-yellow-100 text-yellow-600",
-      amount: "₹ 35,750",
-      addTask: "",
-    },
-    {
-      voucher: "OS-78910",
-      bookingId: "Amit Patel",
-      leadPax: "10 Mar 2025",
-      date: "🏨 Accomodation",
-      service: "Confirmed",
-      statusColor: "bg-green-100 text-green-600",
-      amount: "₹ 78,900",
-      addTask: "",
-    },
-    {
-      voucher: "OS-78905",
-      bookingId: "Neha Gupta",
-      leadPax: "22 Jul 2025",
-      date: "✈️ Flight",
-      service: "Hold",
-      statusColor: "bg-gray-200 text-gray-700",
-      amount: "₹ 18,450",
-      addTask: "",
-    },
-    {
-      voucher: "OS-78890",
-      bookingId: "Vikram Singh",
-      leadPax: "25 Jul 2025",
-      date: "🚌 Transportation",
-      service: "Cancelled",
-      statusColor: "bg-red-100 text-red-500",
-      amount: "₹ 5,200",
-      addTask: "",
-    },
-    {
-      voucher: "OS-78891",
-      bookingId: "Aisha Khan",
-      leadPax: "30 Jul 2025",
-      date: "🚗 Transportation",
-      service: "Released",
-      statusColor: "bg-blue-100 text-blue-600",
-      amount: "₹ 6,200",
-      addTask: "",
-    },
-    {
-      voucher: "OS-78892",
-      bookingId: "Rohit Verma",
-      leadPax: "02 Aug 2025",
-      date: "🚗 Transportation",
-      service: "Confirmed",
-      statusColor: "bg-green-100 text-green-600",
-      amount: "₹ 7,200",
-      addTask: "",
-    },
-    {
-      voucher: "OS-78893",
-      bookingId: "Meera Joshi",
-      leadPax: "05 Aug 2025",
-      date: "🚗 Transportation",
-      service: "Pending",
-      statusColor: "bg-yellow-100 text-yellow-600",
-      amount: "₹ 8,200",
-      addTask: "",
-    },
-    {
-      voucher: "OS-78894",
-      bookingId: "Suresh Rana",
-      leadPax: "10 Aug 2025",
-      date: "✈️ Flight",
-      service: "Hold",
-      statusColor: "bg-gray-200 text-gray-700",
-      amount: "₹ 9,200",
-      addTask: "",
-    },
-    {
-      voucher: "OS-78895",
-      bookingId: "Anita Desai",
-      leadPax: "12 Aug 2025",
-      date: "🏨 Accomodation",
-      service: "Cancelled",
-      statusColor: "bg-red-100 text-red-500",
-      amount: "₹ 10,200",
-      addTask: "",
-    },
-  ];
+
+  // Filter dropdown state
+  const [serviceTypes, setServiceTypes] = useState([]);
+  const [statuses, setStatuses] = useState([]);
+  const [owners, setOwners] = useState([]);
+  const [selectedServiceType, setSelectedServiceType] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedOwner, setSelectedOwner] = useState("");
+
+  const headers = {
+    "Content-Type": "application/json",
+    authorization: localStorage.getItem("token"),
+  };
+
+  // Fetch filter options on mount
+  useEffect(() => {
+    const fetchServiceTypes = async () => {
+      try {
+        const res = await axios.get("YOUR_SERVICE_TYPE_API", { headers });
+        setServiceTypes(Array.isArray(res.data) ? res.data : []);
+      } catch (err) {
+        setServiceTypes([]);
+        console.error("Error fetching service types", err);
+      }
+    };
+    const fetchStatuses = async () => {
+      try {
+        const res = await axios.get("YOUR_STATUS_API", { headers });
+        setStatuses(Array.isArray(res.data) ? res.data : []);
+      } catch (err) {
+        setStatuses([]);
+        console.error("Error fetching statuses", err);
+      }
+    };
+    const fetchOwners = async () => {
+      try {
+        const res = await axios.get("YOUR_OWNER_API", { headers });
+        setOwners(Array.isArray(res.data) ? res.data : []);
+      } catch (err) {
+        setOwners([]);
+        console.error("Error fetching owners", err);
+      }
+    };
+    fetchServiceTypes();
+    fetchStatuses();
+    fetchOwners();
+  }, []);
+
+  const [bookings, setBookings] = useState([]);
+  const [loadingBookings, setLoadingBookings] = useState(false);
+  const [bookingsError, setBookingsError] = useState(null);
+
+  useEffect(() => {
+    const fetchQuotations = async () => {
+      setLoadingBookings(true);
+      setBookingsError(null);
+      try {
+        const res = await axios.get(
+          "http://localhost:8080/quotation/get-all-quotations",
+          { headers }
+        );
+        const data = Array.isArray(res.data.quotations)
+          ? res.data.quotations
+          : [];
+        const filtered = data.map((q) => ({
+          voucher: q.voucherNo || q.voucher || q._id || "-",
+          bookingId: q.partyId?.name || q.customerName || "-",
+          leadPax: q.travelDetails?.passengers || "-",
+          travelDate: q.travelDetails?.date
+            ? new Date(q.travelDetails?.date).toLocaleDateString()
+            : "-",
+          service: q.quotationType || "-",
+          status: q.status || "-",
+          amount: q.totalAmount ? `₹ ${q.totalAmount}` : "-",
+          _id: q._id,
+        }));
+        setBookings(filtered);
+      } catch (err) {
+        setBookings([]);
+        setBookingsError("Failed to fetch bookings");
+      } finally {
+        setLoadingBookings(false);
+      }
+    };
+    fetchQuotations();
+  }, []);
+
   const totalRows = bookings.length;
   const totalPages = Math.ceil(totalRows / rowsPerPage);
   const paginatedRows = bookings.slice(
@@ -149,36 +134,75 @@ const MyBookings = ({ children }) => {
         <div className="bg-white rounded-2xl shadow p-4 mb-4 mx-[-80px]">
           <h2 className="text-xl font-bold mb-4 text-left">Filters</h2>
           <hr className="mb-6" />
+          {/* Service type Filter */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="rounded-xl p-4 text-left">
               <label className="block text-gray-700 mb-2">Service Type</label>
               <div className="relative">
-                <select className="w-full border border-gray-300 rounded-lg px-2 py-3 text-gray-500 focus:outline-none pr-8 appearance-none">
-                  <option>Service Type</option>
+                <select
+                  className="w-full border border-gray-300 rounded-lg px-2 py-3 text-gray-500 focus:outline-none pr-8 appearance-none"
+                  value={selectedServiceType}
+                  onChange={(e) => setSelectedServiceType(e.target.value)}
+                >
+                  <option value="">Service Type</option>
+                  {serviceTypes.map((type) => (
+                    <option
+                      key={type.id || type._id || type}
+                      value={type.value || type.name || type}
+                    >
+                      {type.label || type.name || type}
+                    </option>
+                  ))}
                 </select>
                 <span className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                   <MdOutlineKeyboardArrowDown size={22} />
                 </span>
               </div>
             </div>
+            {/* Status Filter */}
             <div className="rounded-xl p-4 text-left">
               <label className="block text-gray-700 mb-2">Status</label>
               <div className="relative">
-                <select className="w-full border border-gray-300 rounded-lg px-2 py-3 text-gray-500 focus:outline-none pr-8 appearance-none">
-                  <option>Status</option>
+                <select
+                  className="w-full border border-gray-300 rounded-lg px-2 py-3 text-gray-500 focus:outline-none pr-8 appearance-none"
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.target.value)}
+                >
+                  <option value="">Status</option>
+                  {statuses.map((status) => (
+                    <option
+                      key={status.id || status._id || status}
+                      value={status.value || status.name || status}
+                    >
+                      {status.label || status.name || status}
+                    </option>
+                  ))}
                 </select>
                 <span className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                   <MdOutlineKeyboardArrowDown size={22} />
                 </span>
               </div>
             </div>
+            {/* Owner Filter */}
             <div className="rounded-xl p-4 text-left">
               <label className="block text-gray-700 mb-2">
                 Owner (Primary)
               </label>
               <div className="relative">
-                <select className="w-full border border-gray-300 rounded-lg px-2 py-3 text-gray-500 focus:outline-none pr-8 appearance-none">
-                  <option>Select Owner</option>
+                <select
+                  className="w-full border border-gray-300 rounded-lg px-2 py-3 text-gray-500 focus:outline-none pr-8 appearance-none"
+                  value={selectedOwner}
+                  onChange={(e) => setSelectedOwner(e.target.value)}
+                >
+                  <option value="">Select Owner</option>
+                  {owners.map((owner) => (
+                    <option
+                      key={owner.id || owner._id || owner}
+                      value={owner.value || owner.name || owner}
+                    >
+                      {owner.label || owner.name || owner}
+                    </option>
+                  ))}
                 </select>
                 <span className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                   <MdOutlineKeyboardArrowDown size={22} />
@@ -322,36 +346,50 @@ const MyBookings = ({ children }) => {
                 </tr>
               </thead>
               <tbody>
-                {paginatedRows.map((row, idx) => (
-                  <tr
-                    key={idx}
-                    className={`${
-                      idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                    } hover:bg-gray-100`}
-                  >
-                    <td className="px-4 py-3 font-medium text-[#155e75] underline cursor-pointer">
-                      {row.voucher}
-                    </td>
-                    <td className="px-4 py-3">{row.bookingId}</td>
-                    <td className="px-4 py-3">{row.leadPax}</td>
-                    <td className="px-4 py-3">{row.date}</td>
-                    <td className="px-4 py-3">{row.date.split(" ")[1]}</td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={`px-4 py-1 rounded-full font-semibold text-xs ${row.statusColor}`}
-                      >
-                        {row.service}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">{row.amount}</td>
-                    <td className="px-4 py-3 text-center">
-                      <button className="bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center">
-                        <CiCirclePlus className="text-[#114958]" size={20} />
-                      </button>
+                {loadingBookings ? (
+                  <tr>
+                    <td colSpan={8} className="text-center py-6">
+                      Loading...
                     </td>
                   </tr>
-                ))}
-                {/* Fill empty rows to keep table height consistent */}
+                ) : bookingsError ? (
+                  <tr>
+                    <td colSpan={8} className="text-center text-red-500 py-6">
+                      {bookingsError}
+                    </td>
+                  </tr>
+                ) : (
+                  paginatedRows.map((row, idx) => (
+                    <tr
+                      key={row._id || idx}
+                      className={`${
+                        idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      } hover:bg-gray-100`}
+                    >
+                      <td className="px-4 py-3 font-medium text-[#155e75] underline cursor-pointer">
+                        {row.voucher}
+                      </td>
+                      <td className="px-4 py-3">{row.bookingId}</td>
+                      <td className="px-4 py-3">{row.leadPax}</td>
+                      <td className="px-4 py-3">{row.travelDate}</td>
+                      <td className="px-4 py-3">{row.service}</td>
+                      <td className="px-4 py-3">
+                        <span
+                          className={`px-4 py-1 rounded-full font-semibold text-xs bg-gray-100 text-gray-700`}
+                        >
+                          {row.status}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">{row.amount}</td>
+                      <td className="px-4 py-3 text-center">
+                        <button className="bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center">
+                          <CiCirclePlus className="text-[#114958]" size={20} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+                {/* Fill empty rows */}
                 {Array.from({
                   length: Math.max(0, rowsPerPage - paginatedRows.length),
                 }).map((_, idx) => (
