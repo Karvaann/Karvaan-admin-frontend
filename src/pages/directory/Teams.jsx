@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Table from "../../components/Table";
 import SideSheet from "../../components/SideSheet";
 import axios from "axios";
-import AddUserForm from "./create/AddUserForm";
+import AddMemberForm from "./create/AddMemberForm";
 
 const Teams = () => {
   const [isSideSheetOpen, setIsSideSheetOpen] = useState({
@@ -129,9 +129,6 @@ const Teams = () => {
     return tab;
   };
 
-  // Tab state
-  const [activeTab, setActiveTab] = useState(0);
-
   return (
     <div className="bg-white rounded-2xl shadow pt-3 pl-[5rem] pr-[1rem] pb-6 text-left">
       <div>
@@ -154,7 +151,7 @@ const Teams = () => {
             className="bg-[#114958] text-white px-8 py-2 rounded-lg shadow hover:bg-[#14505e] transition"
             onClick={() => handleRowClick()}
           >
-            Add New User
+            Add New Member
           </button>
         </div>
         <Table columns={columns} data={tableData()} />
@@ -163,9 +160,9 @@ const Teams = () => {
       <SideSheet
         isOpen={isSideSheetOpen.open}
         onClose={() => setIsSideSheetOpen({ open: false, data: null })}
-        title="Add User"
+        title="Add Member"
       >
-        <AddUserForm
+        <AddMemberForm
           data={isSideSheetOpen.data}
           rolesData={teamData}
           onCancel={() => setIsSideSheetOpen({ open: false, data: null })}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const AddUserForm = ({ data, rolesData, onCancel }) => {
+const AddMemberForm = ({ data, rolesData, onCancel }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneCode, setPhoneCode] = useState("+91");
@@ -87,7 +87,6 @@ const AddUserForm = ({ data, rolesData, onCancel }) => {
         </select>
       </div>
 
-      {/* Buttons */}
       <div className="flex justify-end gap-4 pt-4">
         <button
           className="px-6 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100"
@@ -103,4 +102,4 @@ const AddUserForm = ({ data, rolesData, onCancel }) => {
   );
 };
 
-export default AddUserForm;
+export default AddMemberForm;

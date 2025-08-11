@@ -34,7 +34,7 @@ const MyBookings = ({ children }) => {
   useEffect(() => {
     const fetchServiceTypes = async () => {
       try {
-        const res = await axios.get("YOUR_SERVICE_TYPE_API", { headers });
+        const res = await axios.get("SERVICE_TYPE_API", { headers });
         setServiceTypes(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         setServiceTypes([]);
@@ -43,7 +43,7 @@ const MyBookings = ({ children }) => {
     };
     const fetchStatuses = async () => {
       try {
-        const res = await axios.get("YOUR_STATUS_API", { headers });
+        const res = await axios.get("STATUS_API", { headers });
         setStatuses(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         setStatuses([]);
@@ -52,7 +52,7 @@ const MyBookings = ({ children }) => {
     };
     const fetchOwners = async () => {
       try {
-        const res = await axios.get("YOUR_OWNER_API", { headers });
+        const res = await axios.get("OWNER_API", { headers });
         setOwners(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         setOwners([]);
