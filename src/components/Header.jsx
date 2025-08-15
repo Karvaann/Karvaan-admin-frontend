@@ -4,13 +4,19 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { IoHomeOutline } from "react-icons/io5";
 import { IoPersonOutline } from "react-icons/io5";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({ isOpen }) => {
   const [isDropDownOpen, setisDropDownOpen] = useState(false);
   const { logout } = useAuth();
+  const navigate = useNavigate();
   const handleLogOut = () => {
     // Redirect the user to the SignIn page
     logout();
+  };
+
+  const handleSettingsClick = () => {
+    navigate("/settings");
   };
 
   const pieceMap = {
@@ -26,6 +32,7 @@ const Header = ({ isOpen }) => {
     customers: "Customers",
     team: "Team",
     vendors: "Vendors",
+    settings: "Settings",
   };
 
   const headerMap = {
@@ -41,6 +48,7 @@ const Header = ({ isOpen }) => {
     "/directory/customers": "Directory - Customers",
     "/directory/team": "Directory - Team",
     "/": "Dashboard",
+    "/settings": "Profile - Settings",
   };
 
   const generateBreadCrumb = () => {
@@ -129,7 +137,10 @@ const Header = ({ isOpen }) => {
                 <button className="flex items-center w-full px-4 py-2 text-sm hover:text-blue-400">
                   <FaUser className="mr-2" /> Profile
                 </button>
-                <button className="flex items-center w-full px-4 py-2 text-sm hover:text-blue-400">
+                <button
+                  onClick={handleSettingsClick}
+                  className="flex items-center w-full px-4 py-2 text-sm hover:text-blue-400"
+                >
                   <FaCog className="mr-2" /> Settings
                 </button>
                 <button className="flex items-center w-full px-4 py-2 text-sm hover:text-blue-400">

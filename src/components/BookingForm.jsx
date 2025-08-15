@@ -8,7 +8,7 @@ const BookingForm = ({ selectedService }) => {
   const toggleSection = (sectionName) => {
     setOpenSections((prev) => ({
       ...prev,
-      [sectionName]: !prev[sectionName]
+      [sectionName]: !prev[sectionName],
     }));
   };
 
@@ -19,7 +19,9 @@ const BookingForm = ({ selectedService }) => {
           <button
             type="button"
             onClick={() => toggleSection(sectionName)}
-            className={`w-full flex justify-between items-center px-4 py-3 text-left font-semibold text-lg bg-white  ${openSections[sectionName] ? 'border-b' : ''} `}
+            className={`w-full flex justify-between items-center px-4 py-3 text-left font-semibold text-lg bg-white  ${
+              openSections[sectionName] ? "border-b" : ""
+            } `}
           >
             <span>{sectionName}</span>
             <span>{openSections[sectionName] ? "▲" : "▼"}</span>
@@ -31,8 +33,13 @@ const BookingForm = ({ selectedService }) => {
                 if (field.type === "select") {
                   return (
                     <div className="flex flex-col items-stretch" key={i}>
-                      <label className="block text-sm font-medium mb-1 text-left">{field.label}</label>
-                      <select name={field.name} className="w-full border rounded px-3 py-2">
+                      <label className="block text-sm font-medium mb-1 text-left">
+                        {field.label}
+                      </label>
+                      <select
+                        name={field.name}
+                        className="w-full border rounded px-3 py-2"
+                      >
                         {field.options.map((opt, j) => (
                           <option key={j} value={opt}>
                             {opt}
@@ -45,7 +52,9 @@ const BookingForm = ({ selectedService }) => {
 
                 return (
                   <div key={i}>
-                    <label className="block text-sm font-medium mb-1 text-left">{field.label}</label>
+                    <label className="block text-sm font-medium mb-1 text-left">
+                      {field.label}
+                    </label>
                     <input
                       type={field.type}
                       name={field.name}

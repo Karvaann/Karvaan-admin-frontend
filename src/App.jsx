@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import Vendors from "./pages/directory/Vendors";
 import Customers from "./pages/directory/Customer";
 import Teams from "./pages/directory/Teams";
+import Settings from "./pages/Settings";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -39,6 +40,7 @@ function App() {
           <Route path="/directory/vendors" element={<Vendors />} />
           <Route path="/directory/customers" element={<Customers />} />
           <Route path="/directory/team" element={<Teams />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </BrowserRouter>
     </>
