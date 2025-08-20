@@ -13,6 +13,7 @@ import Vendors from "./pages/directory/Vendors";
 import Customers from "./pages/directory/Customer";
 import Teams from "./pages/directory/Teams";
 import Settings from "./pages/Settings";
+import ProfileSummary from "./components/ProfileSummary";
 
 function App() {
   const { isAuthenticated } = useAuth();

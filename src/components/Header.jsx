@@ -48,7 +48,7 @@ const Header = ({ isOpen }) => {
     "/directory/customers": "Directory - Customers",
     "/directory/team": "Directory - Team",
     "/": "Dashboard",
-    "/settings": "Profile - Settings",
+    "/settings": "Settings",
   };
 
   const generateBreadCrumb = () => {

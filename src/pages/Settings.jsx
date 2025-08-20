@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import ProfileSummary from "../components/ProfileSummary";
+import TermsConditions from "../components/TermsConditions";
+import PrivacyPolicy from "../components/PrivacyPolicy";
 
 const menuOptions = [
   { key: "profile", label: "Profile And Summary" },
@@ -8,32 +11,10 @@ const menuOptions = [
 ];
 
 const mockContent = {
-  profile: (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">Profile And Summary</h2>
-      <p>Name: John Doe</p>
-      <p>Email: johndoe@example.com</p>
-      <p>Role: Admin</p>
-      <p>Summary: This is a mock profile summary for demonstration.</p>
-    </div>
-  ),
+  profile: <ProfileSummary />,
   roles: <RolesPermissionsSection />, // Custom component for roles/permissions
-  terms: (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">Terms And Conditions</h2>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam euismod,
-        urna eu tincidunt consectetur, nisi nisl aliquam nunc, eget aliquam
-        massa.
-      </p>
-    </div>
-  ),
-  privacy: (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">Privacy Policy</h2>
-      <p>This is a mock privacy policy. Your data is safe with us.</p>
-    </div>
-  ),
+  terms: <TermsConditions />,
+  privacy: <PrivacyPolicy />,
 };
 // Roles permission sections
 const roleCategories = [

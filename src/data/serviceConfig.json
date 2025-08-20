@@ -7,6 +7,14 @@
       { "label": "Email ID", "type": "email", "name": "email" },
       { "label": "Contact Number", "type": "tel", "name": "contactNumber" }
     ],
+    "Traveller Details": [
+      {
+        "label": "Full Name As per Passport",
+        "type": "text",
+        "name": "FullName"      },
+      { "label": "Ticket Number", "type": "tel", "name": "ticketNumber" },
+      { "label": "Frequent Flyer No.", "type": "tel", "name": "frequentflyer" }
+    ],
     "ID Upload": [
       {
         "label": "ID Type",
@@ -16,16 +24,102 @@
       },
       { "label": "ID Number", "type": "text", "name": "idNumber" },
       { "label": "Upload Document", "type": "file", "name": "uploadDocument" }
+    ],
+    "Flight Details": [
+      { "label": "Flight Number", "type": "text", "name": "flightNumber" },
+      { "label": "PNR/Booking Reference", "type": "text", "name": "PNRNumber" },
+      { "label": "Class Of Travel", "type": "text", "name": "classtype" },
+      { "label": "Departure City", "type": "text", "name": "departurecity" },
+      { "label": "Departure Date", "type": "date", "name": "departureDate" },
+      { "label": "Departure Time", "type": "time", "name": "departureTime" },
+      { "label": "Arrival City", "type": "text", "name": "arrivalcity" },
+      { "label": "Arrival Date", "type": "date", "name": "arrivalDate" },
+      { "label": "Arrival Time", "type": "time", "name": "arrivalTime" }
+    ],
+    "Additional Info": [
+      { "label": "Booking Date", "type": "date", "name": "bookingdate" },
+      { "label": "Add-ons", "type": "select", "name": "add-ons", "options":["Meals", "Seat", "Other Services"] }
+    ],
+    " Important Notes": [
+      { "label": "Policies", "type": "text", "name": "policies" },
+      { "label": "Notes on ID", "type": "text", "name": "notesonID" }
     ]
   },
   "Accommodation": {
     "Hotel Info": [
       { "label": "Hotel Name", "type": "text", "name": "hotelName" },
-      { "label": "Check-in Date", "type": "date", "name": "checkIn" },
-      { "label": "Check-out Date", "type": "date", "name": "checkOut" }
+      { "label": "Hotel Address", "type": "text", "name": "hotelAddress" },
+      { "label": "Hotel Contact Number", "type": "tel", "name": "hotelContactNumber" }
+      
     ],
     "Guest Info": [
-      { "label": "Number of Guests", "type": "number", "name": "guests" }
+      { "label": "Number of Guests", "type": "number", "name": "guests" },
+      { "label": "Full Name of Lead Guest", "type": "text", "name": "FullNameleadguest" },
+      { "label": "Child Age (if applicable)", "type": "text", "name": "childage" },
+      { "label": "Number of Rooms", "type": "number", "name": "numberrooms" },
+      { "label": "Number of Nights", "type": "number", "name": "numbernights" }
+    ],
+    "Booking Details": [
+      { "label": "Check-in Date", "type": "date", "name": "checkIn" },
+      { "label": "Check-out Date", "type": "date", "name": "checkOut" },
+      { "label": "Meal Plan", "type": "select", "name": "mealplan", "options": ["CPAI", "MAPAI", "APAI", "Room Only", "All-Inclusive"] },
+      { "label": "Room Category", "type": "select", "name": "roomtype", "options": ["Single", "Double", "Suite"] }
+    ],
+    " Important Notes": [
+      { "label": "Policies", "type": "text", "name": "policies" },
+      { "label": "Inclusions", "type": "text", "name": "inclusions" },
+      { "label": "Special Requests", "type": "select", "name": "requests", "options": ["Late Check-in", "Early Check-out", "Room Upgrade", "Honeymoon setup", "adjoining rooms", "Other"] }
+    ]
+  },
+  "Land Transportation": {
+    "Booking Details": [
+      { "label": "Booking Reference / Voucher Number ", "type": "text", "name": "bookingreference" },
+      { "label": "Booking Date", "type": "date", "name": "bookingdate" },
+      { "label": "Tour Name ", "type": "select", "name": "tourname", "options": ["Full Day", "Half Day"] },
+      { "label": "Transfer Mode", "type": "select", "name": "transfermode", "options":["Private", "SIC"]}
+    ],
+    "Guest Details": [
+      { "label": "Total Pax", "type": "number", "name": "totalpax" },
+      { "label": "Full Name of Lead Guest", "type": "text", "name": "FullNameleadguest" },
+      { "label": "Number of Luggage Pieces", "type": "text", "name": "luggagepiecies" }
+    ],
+    "Transfer Details": [
+      { "label": "Date of Travel ", "type": "date", "name": "dateoftravel" },
+      { "label": "Pickup Time ", "type": "time", "name": "pickuptime" },
+      { "label": "Pickup Location", "type": "address", "name": "pickuplocation" },
+      { "label": "Drop-Off Location", "type": "address", "name": "droplocation" }
+    ],
+    " Vehicle Details (When Assigned)": [
+      { "label": "Type of Vehicle", "type": "select", "name": "vehicletype", "options":["SUV", "Hatchback", "Sedan"] },
+      { "label": "Vehicle Number ", "type": "text", "name": "vehiclenumber" },
+      { "label": "Driver Name  ", "type": "text", "name": "drivername" },
+      { "label": "Driver Contact Number", "type": "tel", "name": "drivercontactnumber" }
+    ],
+    " Important Notes": [
+      { "label": "Policies", "type": "text", "name": "policies" },
+      { "label": "Inclusions", "type": "text", "name": "inclusions" }
+    ]
+  },
+  "Activity": {
+    "Booking Details": [
+      { "label": "Booking Reference / Voucher Number ", "type": "text", "name": "bookingreference" },
+      { "label": "Booking Date", "type": "date", "name": "bookingdate" },
+       { "label": "Total Pax", "type": "number", "name": "totalpax" },
+     { "label": "Full Name of Lead Guest", "type": "text", "name": "FullNameleadguest" }
+    ],
+    "Activity Details": [
+      { "label": "Activity Name", "type": "text", "name": "activityName" },
+      { "label": "Activity Type", "type": "select", "name": "activityType", "options": ["Adventure", "Cultural", "Sightseeing", "Wellness", "Private", "SIC", "Small Group"] },
+      { "label": "Pickup Time", "type": "time", "name": "pickupTime" },
+      { "label": "Hotel Name", "type": "text", "name": "hotelName" },
+      { "label": "Activity Duration", "type": "text", "name": "activityDuration" },
+      { "label": "Activity Date", "type": "date", "name": "activityDate" },
+      { "label": "Reporting Time", "type": "time", "name": "reportingTime" },
+      { "label": "Activity Location", "type": "address", "name": "activityLocation" }
+    ],
+    " Important Notes": [
+      { "label": "Policies", "type": "text", "name": "policies" },
+      { "label": "Inclusions", "type": "text", "name": "inclusions" }
     ]
   }
 }
