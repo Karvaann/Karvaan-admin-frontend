@@ -19,8 +19,11 @@ const headers = {
 const services = [
   { title: "Flights", image: "/public/assets/images/flight.png" },
   { title: "Accommodation", image: "/public/assets/images/accomodation.png" },
-  { title: "Flights", image: "/public/assets/images/flight.png" },
-  { title: "Accommodation", image: "/public/assets/images/accomodation.png" },
+  {
+    title: "Land Transportation",
+    image: "/public/assets/images/transportation(land).png",
+  },
+  { title: "Activity", image: "/public/assets/images/activity.png" },
   { title: "Flights", image: "/public/assets/images/flight.png" },
   { title: "Accommodation", image: "/public/assets/images/accomodation.png" },
   { title: "Flights", image: "/public/assets/images/flight.png" },
