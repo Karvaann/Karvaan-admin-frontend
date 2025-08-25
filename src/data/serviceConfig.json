@@ -63,7 +63,9 @@
       { "label": "Check-in Date", "type": "date", "name": "checkIn" },
       { "label": "Check-out Date", "type": "date", "name": "checkOut" },
       { "label": "Meal Plan", "type": "select", "name": "mealplan", "options": ["CPAI", "MAPAI", "APAI", "Room Only", "All-Inclusive"] },
-      { "label": "Room Category", "type": "select", "name": "roomtype", "options": ["Single", "Double", "Suite"] }
+      { "label": "Room Category", "type": "select", "name": "roomtype", "options": ["Single", "Double", "Suite"] },
+      { "label": "Total Amount", "type": "text", "name": "totalAmount" },
+      { "label": "Booking Date", "type": "date", "name": "bookingdate" }
     ],
     " Important Notes": [
       { "label": "Policies", "type": "text", "name": "policies" },
@@ -76,7 +78,8 @@
       { "label": "Booking Reference / Voucher Number ", "type": "text", "name": "bookingreference" },
       { "label": "Booking Date", "type": "date", "name": "bookingdate" },
       { "label": "Tour Name ", "type": "select", "name": "tourname", "options": ["Full Day", "Half Day"] },
-      { "label": "Transfer Mode", "type": "select", "name": "transfermode", "options":["Private", "SIC"]}
+      { "label": "Transfer Mode", "type": "select", "name": "transfermode", "options":["Private", "SIC"]},
+      { "label": "Total Amount", "type": "text", "name": "totalAmount" }
     ],
     "Guest Details": [
       { "label": "Total Pax", "type": "number", "name": "totalpax" },

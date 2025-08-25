@@ -51,6 +51,17 @@
   animation: bg-slide-once 4s ease-out forwards;
 }
 
+.hidden-print {
+  display: none;
+}
+
+@media print {
+  .hidden-print {
+    display: block;
+  }
+}
+
+
 
 
 

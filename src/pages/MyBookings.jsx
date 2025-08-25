@@ -4,15 +4,43 @@ import { RiRefreshLine } from "react-icons/ri";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import { RiExchangeDollarLine } from "react-icons/ri";
-import { CiCirclePlus } from "react-icons/ci";
+import { AiOutlineFilePdf } from "react-icons/ai";
+import { MdDelete } from "react-icons/md";
+import { useRef } from "react";
+import TravelQuotation from "../components/pdf/TravelQuotation";
 
 import BookingFormModal from "../components/BookingFormModal";
 
-import { IoMdArrowDown } from "react-icons/io";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
 const MyBookings = ({ children }) => {
+  const fetchQuotationById = async (id) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8080/quotation/get-quotation/${id}`,
+        { headers }
+      );
+      return res.data.quotations;
+    } catch (err) {
+      console.error("Error fetching quotation by ID", err);
+      return null;
+    }
+  };
+  const fetchQuotationsByParty = async (partyId) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8080/quotation/get-quotations-by-party/${partyId}`,
+        { headers }
+      );
+      return res.data.quotations;
+    } catch (err) {
+      console.error("Error fetching quotations by party ID", err);
+      return [];
+    }
+  };
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const printRef = useRef();
+  const [selectedQuotation, setSelectedQuotation] = useState(null);
   // Pagination state
   const [page, setPage] = useState(1);
   const rowsPerPage = 8;
@@ -30,7 +58,58 @@ const MyBookings = ({ children }) => {
     authorization: localStorage.getItem("token"),
   };
 
-  // Fetch filter options on mount
+  const handlePrint = () => {
+    if (!printRef.current) {
+      console.error("Print content not ready yet");
+      return;
+    }
+    const printContent = printRef.current.innerHTML;
+    const stylecss = Array.from(document.styleSheets)
+      .map((styleSheet) => {
+        try {
+          return Array.from(styleSheet.cssRules)
+            .map((rule) => rule.cssText)
+            .join("");
+        } catch (e) {
+          return "";
+        }
+      })
+      .join("");
+    const printWindow = window.open("", "_blank", "width=800,height=600");
+    printWindow.document.write(`
+      <html>
+      <head>
+        <title>Travel Voucher</title>
+       <style>
+          ${stylecss}
+        </style>
+       
+      </head>
+      <body>${printContent}</body>
+    </html>
+      `);
+    printWindow.document.close();
+    printWindow.onload = () => {
+      printWindow.print();
+    };
+  };
+
+  const handleDelete = async (row) => {
+    if (!window.confirm("Are you sure you want to delete this booking")) return;
+    try {
+      await axios.delete(
+        `http://localhost:8080/quotation/delete-quotation/${row.bookingId}`,
+        { headers }
+      );
+
+      setBookings((prev) => prev.filter((b) => b.bookingId !== row.bookingId));
+    } catch (err) {
+      alert("Failed to delete booking.");
+      console.error("Delete error:", err);
+    }
+  };
+
+  // Fetch filter options
   useEffect(() => {
     const fetchServiceTypes = async () => {
       try {
@@ -81,16 +160,16 @@ const MyBookings = ({ children }) => {
           ? res.data.quotations
           : [];
         const filtered = data.map((q) => ({
-          voucher: q.voucherNo || q.voucher || q._id || "-",
-          bookingId: q.partyId?.name || q.customerName || "-",
-          leadPax: q.travelDetails?.passengers || "-",
-          travelDate: q.travelDetails?.date
-            ? new Date(q.travelDetails?.date).toLocaleDateString()
-            : "-",
+          voucher: q.voucher || q._id || "-",
+          bookingId: q._id || q.customerName || "-",
+          leadPax:
+            q.quotationType === "flights"
+              ? q.formFields?.FullName || "-"
+              : q.formFields?.FullNameleadguest,
+          travelDate: q.formFields?.bookingdate || "-",
           service: q.quotationType || "-",
           status: q.status || "-",
           amount: q.totalAmount ? `₹ ${q.totalAmount}` : "-",
-          _id: q._id,
         }));
         setBookings(filtered);
       } catch (err) {
@@ -280,7 +359,7 @@ const MyBookings = ({ children }) => {
               +8.5% from last month
             </span>
           </div>
-          {/* Right spaced last 2 cards */}
+
           <div className="flex gap-4 ml-auto">
             {/* You Give Card */}
             <div className="bg-white border border-red-100 rounded-2xl shadow p-4 flex flex-col justify-between w-[280px] min-w-[120px] md:mr-6">
@@ -325,24 +404,15 @@ const MyBookings = ({ children }) => {
             <table className="min-w-full text-sm">
               <thead>
                 <tr className="bg-[#155e75] text-white">
-                  <th className="px-4 py-3 font-semibold text-left">Voucher</th>
-                  <th className="px-4 py-3 font-semibold text-left">
-                    Booking ID
-                  </th>
-                  <th className="px-4 py-3 font-semibold text-left">
-                    Lead Pax
-                  </th>
-                  <th className="px-4 py-3 font-semibold text-left">
-                    Date of Travel
-                  </th>
-                  <th className="px-4 py-3 font-semibold text-left">Service</th>
-                  <th className="px-4 py-3 font-semibold text-left">
-                    Booking Status
-                  </th>
-                  <th className="px-4 py-3 font-semibold text-left">Amount</th>
-                  <th className="px-4 py-3 font-semibold text-left">
-                    Add Task
-                  </th>
+                  <th className="px-4 py-3 font-semibold">S. No.</th>
+                  <th className="px-4 py-3 font-semibold">Voucher</th>
+                  <th className="px-4 py-3 font-semibold ">Booking ID</th>
+                  <th className="px-4 py-3 font-semibold ">Lead Pax</th>
+                  <th className="px-4 py-3 font-semibold ">Date of Travel</th>
+                  <th className="px-4 py-3 font-semibold ">Service</th>
+                  <th className="px-4 py-3 font-semibold ">Booking Status</th>
+                  <th className="px-4 py-3 font-semibold ">Amount</th>
+                  <th className="px-4 py-3 font-semibold ">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -362,10 +432,13 @@ const MyBookings = ({ children }) => {
                   paginatedRows.map((row, idx) => (
                     <tr
                       key={row._id || idx}
-                      className={`${
+                      className={`$
                         idx % 2 === 0 ? "bg-white" : "bg-gray-50"
                       } hover:bg-gray-100`}
                     >
+                      <td className="px-4 py-3 font-medium">
+                        {(page - 1) * rowsPerPage + idx + 1}
+                      </td>
                       <td className="px-4 py-3 font-medium text-[#155e75] underline cursor-pointer">
                         {row.voucher}
                       </td>
@@ -382,9 +455,34 @@ const MyBookings = ({ children }) => {
                       </td>
                       <td className="px-4 py-3">{row.amount}</td>
                       <td className="px-4 py-3 text-center">
-                        <button className="bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center">
-                          <CiCirclePlus className="text-[#114958]" size={20} />
-                        </button>
+                        <div className="flex items-center gap-2 justify-center">
+                          <button
+                            className="bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center"
+                            onClick={async () => {
+                              // Fetch the quotation by id and log it
+                              const quotation = await fetchQuotationById(
+                                row.voucher
+                              );
+
+                              setSelectedQuotation(quotation);
+                              setTimeout(() => {
+                                handlePrint();
+                              }, 200);
+                            }}
+                          >
+                            <AiOutlineFilePdf
+                              className="text-gray-600"
+                              size={16}
+                            />
+                          </button>
+                          <button
+                            className="bg-red-100 rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-200 transition"
+                            onClick={() => handleDelete(row)}
+                            title="Delete Booking"
+                          >
+                            <MdDelete className="text-black" size={16} />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -401,6 +499,7 @@ const MyBookings = ({ children }) => {
                         : "bg-gray-50"
                     } h-14`}
                   >
+                    <td className="px-4 py-3"></td> {/* S. No. empty cell */}
                     <td className="px-4 py-3" colSpan={8}></td>
                   </tr>
                 ))}
@@ -459,6 +558,15 @@ const MyBookings = ({ children }) => {
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
       />
+
+      {selectedQuotation && (
+        <div ref={printRef} className="hidden-print">
+          <TravelQuotation
+            data={selectedQuotation}
+            quotationType={selectedQuotation.quotationType}
+          />
+        </div>
+      )}
     </>
   );
 };
