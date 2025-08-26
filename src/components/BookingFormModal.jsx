@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
 import BookingForm from "./BookingForm";
+import axios from "axios";
 
 const ServiceCard = ({ title, image, onClick }) => (
   <div
@@ -47,35 +48,39 @@ const BookingFormModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-
     const formValues = Object.fromEntries(formData.entries());
 
+    const serviceKey = selectedService?.toLowerCase();
+
+    if (!serviceKey) {
+      console.error("No service selected");
+      return;
+    }
+    // formFields object updated with form data
+    const formFields = { ...formValues };
+
+    const { totalAmount, ...restFields } = formValues;
+
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const partyId = user._id || "{}";
+
     const payload = {
-      quotationType: selectedService?.toLowerCase() || "unknown",
-      channel: formValues?.channel || "B2C", // can make dropdown later
-      partyId: formValues.customerId || "",
-      travelDetails: {
-        from: formValues.from || "Delhi",
-        to: formValues.to || "Mumbai",
-        date: formValues.checkIn || formValues.date,
-        returnDate: formValues.checkOut || null,
-        passengers: formValues.passengers || 1,
-      },
-      items: [
-        {
-          name: selectedService,
-          price: Number(formValues.price || 0),
-          quantity: 1,
-          description: formValues.hotelName || "",
-        },
-      ],
-      totalAmount: Number(formValues.price || 0),
+      quotationType: serviceKey,
+      channel: "B2C",
+      partyId: partyId,
+      formFields: restFields, // dynamic per service
+      totalAmount,
       status: "draft",
     };
 
     try {
-      await axios.post("/api/quotation/create-quotation", payload, { headers });
-      console.log("Quotation created successfully!");
+      await axios.post(
+        "http://localhost:8080/quotation/create-quotation",
+        payload,
+        { headers }
+      );
+      console.log("Quotation created successfully!", payload);
+      e.target.reset();
     } catch (err) {
       console.error("Error creating quotation", err);
     }
@@ -112,7 +117,10 @@ const BookingFormModal = ({ isOpen, onClose }) => {
 
       {step === 2 && (
         <>
-          <div className="flex flex-col flex-wrap gap-4 justify-center w-[65vw] max-md:w-[100vw]">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col flex-wrap gap-4 justify-center w-[65vw] max-md:w-[100vw]"
+          >
             <BookingForm selectedService={selectedService} />
 
             <div className="flex justify-between mt-6">
@@ -125,12 +133,11 @@ const BookingFormModal = ({ isOpen, onClose }) => {
               <button
                 type="submit"
                 className="px-4 py-2 bg-blue-600 text-white rounded"
-                onClick={handleSubmit}
               >
                 Save
               </button>
             </div>
-          </div>
+          </form>
         </>
       )}
     </Modal>
