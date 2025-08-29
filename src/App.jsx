@@ -13,7 +13,7 @@ import Vendors from "./pages/directory/Vendors";
 import Customers from "./pages/directory/Customer";
 import Teams from "./pages/directory/Teams";
 import Settings from "./pages/Settings";
-import ProfileSummary from "./components/ProfileSummary";
+import VersionTag from "./components/VersionTag";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -43,6 +43,7 @@ function App() {
           <Route path="/directory/team" element={<Teams />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
+        <VersionTag />
       </BrowserRouter>
     </>
   );

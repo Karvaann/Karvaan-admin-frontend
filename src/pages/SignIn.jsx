@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import VersionTag from "../components/VersionTag";
 
 const SignIn = () => {
   const [team, setTeam] = useState("");
@@ -190,6 +191,7 @@ const SignIn = () => {
           </div>
         </div>
       </div>
+      <VersionTag />
     </div>
   );
 };

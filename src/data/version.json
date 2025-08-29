@@ -1,0 +1,15 @@
+{
+    "/sales/limitless": "v0.1",
+    "/sales/other-services": "v0.1",
+    "/operations/limitless": "v0.1",
+    "/operations/other-services": "v0.1",
+    "/finance/limitless": "v0.1",
+    "/finance/other-services": "v0.1",
+    "/leads": "v0.1",
+    "/tasks": "v0.1",
+    "/directory/vendors": "v0.1",
+    "/directory/customers": "v0.1",
+    "/directory/team": "v0.1",
+    "/": "v0.1",
+    "/settings": "v0.1"
+}
